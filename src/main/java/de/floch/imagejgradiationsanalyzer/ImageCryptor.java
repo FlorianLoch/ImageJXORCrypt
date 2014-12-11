@@ -6,6 +6,7 @@
 package de.floch.imagejgradiationsanalyzer;
 
 import ij.ImagePlus;
+import ij.gui.GenericDialog;
 import ij.gui.NewImage;
 import ij.io.OpenDialog;
 import ij.io.Opener;
@@ -23,6 +24,8 @@ public class ImageCryptor implements PlugInFilter {
     private ImageProcessor src;
     private ImageProcessor k;
     private static Random randomizer;
+    private static int KEY_IMAGE_RANDOM = 0;
+    private static int KEY_IMAGE_SELECT = 1;
 
     @Override
     public int setup(String string, ImagePlus ip) {
@@ -42,8 +45,7 @@ public class ImageCryptor implements PlugInFilter {
         int[] pixelsM = (int[]) ip.getPixels();
         int[] pixelsK;
 
-        boolean randomKeyImage = false;
-        if (!randomKeyImage) {
+        if (showKeyImageSelectionDialog() == KEY_IMAGE_SELECT) {
             String path = new OpenDialog("Please select the file to encrypt with").getPath();
             
             keyImage = new Opener().openImage(path);
@@ -78,6 +80,19 @@ public class ImageCryptor implements PlugInFilter {
         }
 
         chiffreImage.show();
+    }
+    
+    private int showKeyImageSelectionDialog() {
+        GenericDialog gD = new GenericDialog("ImageCryptor");
+        String[] imageSourceOptions = new String[]{"Select key image by path", "Use randomly generated key image"};
+        gD.addRadioButtonGroup("Image source used for en/decryption:", imageSourceOptions, 2, 1, imageSourceOptions[0]);
+        gD.showDialog();
+        String selectedImageSource = gD.getNextRadioButton();
+        if (selectedImageSource.equals(imageSourceOptions[0])) {
+            return KEY_IMAGE_SELECT;
+        }
+        
+        return KEY_IMAGE_RANDOM;
     }
     
     private static ImagePlus generateRandomKeyImage(int width, int height) {
