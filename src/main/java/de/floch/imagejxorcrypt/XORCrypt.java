@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.floch.imagejgradiationsanalyzer;
+package de.floch.imagejxorcrypt;
 
 import ij.ImagePlus;
 import ij.gui.GenericDialog;
@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  *
  * @author Florian Loch (florian dot loch at gmail dot com)
  */
-public class ImageCryptor implements PlugInFilter {
+public class XORCrypt implements PlugInFilter {
 
     private ImageProcessor src;
     private ImageProcessor k;
@@ -87,7 +87,7 @@ public class ImageCryptor implements PlugInFilter {
         String[] imageSourceOptions = new String[]{"Select key image by path", "Use randomly generated key image"};
         gD.addRadioButtonGroup("Image source used for en/decryption:", imageSourceOptions, 2, 1, imageSourceOptions[0]);
         gD.showDialog();
-        String selectedImageSource = gD.getNextRadioButton();
+         String selectedImageSource = gD.getNextRadioButton();
         if (selectedImageSource.equals(imageSourceOptions[0])) {
             return KEY_IMAGE_SELECT;
         }
