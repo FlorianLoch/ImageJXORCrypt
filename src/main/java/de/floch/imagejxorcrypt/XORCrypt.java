@@ -12,6 +12,7 @@ import ij.io.OpenDialog;
 import ij.io.Opener;
 import ij.plugin.filter.PlugInFilter;
 import ij.process.ImageProcessor;
+import java.security.SecureRandom;
 import java.util.Random;
 import javax.swing.JOptionPane;
 
@@ -99,10 +100,10 @@ public class XORCrypt implements PlugInFilter {
 
     private static int getRandomInt() {
         if (randomizer == null) {
-            randomizer = new Random();
+            randomizer = new SecureRandom();
         }
 
-        return randomizer.nextInt(16777216);
+        return randomizer.nextInt();
     }
 
 }
